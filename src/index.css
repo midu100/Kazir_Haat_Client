@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1A5D45;
+  --color-primary-dark: #0D4030;
+  --color-primary-light: #2A8F6A;
+  --color-secondary: #F28B00;
+  --color-secondary-dark: #D97A00;
+  --color-secondary-light: #FFB84D;
+  --color-save: #2E8B2E;
+  --color-cream: #FAFAFA;
+  --color-light: #F5F5F5;
+  --color-dark: #1A1A1A;
+  --color-body: #666;
+  --color-accent: #E74C3C;
+  --font-poppins: 'Poppins', sans-serif;
+  --font-bangla: 'Hind Siliguri', sans-serif;
+
+  /* Admin Dashboard Colors */
+  --color-admin-sidebar: #1e293b;
+  --color-admin-navbar: #0f172a;
+  --color-admin-content: #f8f9fc;
+  --color-admin-blue: #3b82f6;
+  --color-admin-blue-dark: #2563eb;
+  --color-admin-blue-light: #60a5fa;
+  --color-admin-card: #ffffff;
+  --color-admin-sidebar-hover: #334155;
+  --color-admin-sidebar-active: #1d4ed8;
+  --color-admin-text-muted: #94a3b8;
+  --color-admin-border: #e2e8f0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Poppins', 'Hind Siliguri', sans-serif;
+  background: #fff;
+  color: #333;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #2A8F6A; border-radius: 10px; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes adminCardIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes adminPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fadeInUp { animation: fadeInUp 0.5s ease-out forwards; }
+.animate-slideInLeft { animation: slideInLeft 0.3s ease-out forwards; }
+.animate-slideDown { animation: slideDown 0.3s ease-out forwards; }
+.animate-marquee { animation: marquee 25s linear infinite; }
+.animate-adminCardIn { animation: adminCardIn 0.4s ease-out forwards; }
+.animate-adminPulse { animation: adminPulse 1.5s ease-in-out infinite; }
