@@ -1,5 +1,5 @@
 import axios from 'axios'
-const expressBaseUrl = 'http://localhost:1000'
+const expressBaseUrl = 'https://kazir-haat-server.onrender.com'
 import { getCookie } from '../components/common/Services'
 
 const api = axios.create({
