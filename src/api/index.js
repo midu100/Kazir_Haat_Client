@@ -1,5 +1,5 @@
-const expressBaseUrl = 'http://localhost:1000'
 import axios from 'axios'
+const expressBaseUrl = 'http://localhost:1000'
 import { getCookie } from '../components/common/Services'
 
 const api = axios.create({
@@ -169,3 +169,28 @@ export const userServices = {
         return res.data
     }
 }
+
+export const dashboardServices = {
+    getStats: async () => {
+        const res = await api.get('/dashboard/stats')
+        return res.data
+    }
+}
+
+export const videoServices = {
+    getVideos: async () => {
+        const res = await api.get('/video')
+        return res.data
+    },
+    addVideo: async (formData) => {
+        const res = await api.post('/video/add', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        })
+        return res.data
+    },
+    deleteVideo: async (id) => {
+        const res = await api.delete(`/video/delete/${id}`)
+        return res.data
+    }
+}
+

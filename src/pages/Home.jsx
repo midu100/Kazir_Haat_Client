@@ -89,9 +89,9 @@ const Home = () => {
               <section className="w-full max-w-[1400px] mx-auto px-4 py-8">
                 <SectionHeader title={cat.name} viewAll to={`/products?category=${cat._id}`} />
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-                  {catProducts.slice(0, 5).map((product) => (
+                  {catProducts.slice(0, 5).map((product, pIdx) => (
                     <div key={product._id} className="h-full">
-                      <ProductCard product={product} />
+                      <ProductCard product={product} index={pIdx} />
                     </div>
                   ))}
                 </div>

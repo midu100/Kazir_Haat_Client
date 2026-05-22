@@ -254,9 +254,9 @@ const AllProducts = () => {
           ) : (
             /* Content Grid */
             <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5 animate-fadeInUp">
-              {filteredProducts.map((product) => (
+              {filteredProducts.map((product, index) => (
                 <div key={product._id} className="h-full">
-                  <ProductCard product={product} />
+                  <ProductCard product={product} index={index} />
                 </div>
               ))}
             </div>

@@ -14,7 +14,9 @@ import AdminCategories from './pages/admin/AdminCategories'
 import AdminProducts from './pages/admin/AdminProducts'
 import AdminOrders from './pages/admin/AdminOrders'
 import AdminUsers from './pages/admin/AdminUsers'
+import AdminVideos from './pages/admin/AdminVideos'
 import AllProducts from './pages/AllProducts'
+import OrderFeedback from './pages/OrderFeedback'
 
 const App = () => {
 
@@ -24,9 +26,12 @@ const App = () => {
       <Route path='/' element={<LayoutOne/>}>
         <Route index element={<Home/>} />
         <Route path='/products' element={<AllProducts/>} />
-        <Route path='/productdetails' element={<ProductDetails/>} />
+        <Route path='/productdetails/:id' element={<ProductDetails/>} />
         <Route path='/cart' element={<ProtectedRoute><Cart/></ProtectedRoute>} />
         <Route path='/checkout' element={<ProtectedRoute><Checkout/></ProtectedRoute>} />
+        <Route path='/order/success/:id' element={<ProtectedRoute><OrderFeedback/></ProtectedRoute>} />
+        <Route path='/order/failed' element={<ProtectedRoute><OrderFeedback/></ProtectedRoute>} />
+        <Route path='/order/cancelled' element={<ProtectedRoute><OrderFeedback/></ProtectedRoute>} />
         <Route path='/signin' element={<SignIn/>} />
         <Route path='/signup' element={<SignUp/>} />
       </Route>
@@ -45,6 +50,7 @@ const App = () => {
         <Route path='products' element={<AdminProducts/>} />
         <Route path='orders' element={<AdminOrders/>} />
         <Route path='users' element={<AdminUsers/>} />
+        <Route path='videos' element={<AdminVideos/>} />
       </Route>
     </Route>
   ))

@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { authServices } from '../api';
 import { setCookie } from '../components/common/Services';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaGoogle, FaApple, FaArrowLeft } from 'react-icons/fa';
+import { LuLeaf } from 'react-icons/lu';
+import { motion } from 'framer-motion';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -24,12 +26,13 @@ const SignIn = () => {
     try {
       const res = await authServices.signin({ email, password });
       if (res?.success) {
-        // Set token cookie on client
         if (res.data?.token) {
           setCookie('token', res.data.token);
         }
         
-        // Redirect based on role
+        // Dispatch event to update navbar immediately
+        window.dispatchEvent(new Event('cartUpdated'));
+
         if (res.data?.role === 'admin') {
           navigate('/admin');
         } else {
@@ -47,108 +50,198 @@ const SignIn = () => {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans bg-gray-50/50">
-      <div className="max-w-md w-full bg-white p-8 sm:p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100">
-        
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-          <p className="text-gray-500 text-sm">Please sign in to your account</p>
+    <div className="min-h-screen bg-[#07050f] text-white flex font-poppins">
+      
+      {/* Left Panel: Decorative Split Screen (Hidden on Mobile) */}
+      <div className="hidden lg:flex lg:w-1/2 relative flex-col justify-between p-12 overflow-hidden bg-[#100d23]">
+        {/* Background Image with Dark Purple Overlay */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/images/auth_decorative_bg.png" 
+            alt="Desert twilight background" 
+            className="w-full h-full object-cover opacity-35"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#07050f] via-[#100d23]/80 to-[#100d23]/40" />
         </div>
 
-        {/* Error notification */}
-        {error && (
-          <div className="mb-4 p-3.5 rounded-xl text-xs font-medium bg-red-50 text-red-600 border border-red-100">
-            {error}
+        {/* Top Header inside Left Panel */}
+        <div className="z-10 flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-tr from-[#7c3aed] to-[#a78bfa] rounded-xl flex items-center justify-center shadow-lg shadow-purple-600/30">
+            <LuLeaf className="text-white text-xl" />
           </div>
-        )}
+          <div className="leading-tight">
+            <span className="font-bold text-lg text-white block tracking-wide">
+              KAZIR HAAT
+            </span>
+            <span className="text-[10px] text-purple-300 leading-none">
+              Organic Marketplace
+            </span>
+          </div>
+        </div>
 
-        {/* Form */}
-        <form onSubmit={handleSignIn} className="flex flex-col gap-5">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address</label>
-            <input 
-              type="email" 
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-all bg-gray-50/50 focus:bg-white" 
-              placeholder="you@example.com" 
-            />
+        {/* Middle Tagline inside Left Panel */}
+        <div className="z-10 max-w-md my-auto">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-4xl xl:text-5xl font-bold leading-tight mb-4"
+          >
+            Taste the <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a78bfa] to-[#d8b4fe]">Purity</span> of Nature
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-gray-300 text-sm leading-relaxed"
+          >
+            Sourced directly from local farms. Experience premium cold-pressed oils, organic honey, handpicked spices, and natural grain products delivered directly to your doorstep.
+          </motion.p>
+        </div>
+
+        {/* Bottom Link inside Left Panel */}
+        <div className="z-10">
+          <Link 
+            to="/" 
+            className="inline-flex items-center gap-2 text-sm text-purple-300 hover:text-purple-200 transition-colors group font-semibold"
+          >
+            <FaArrowLeft className="group-hover:-translate-x-1 transition-transform" /> 
+            Back to Website
+          </Link>
+        </div>
+      </div>
+
+      {/* Right Panel: Sign In Form */}
+      <div className="w-full lg:w-1/2 bg-[#0a0816] flex flex-col justify-center px-6 py-12 md:px-16 lg:px-20 xl:px-28 relative">
+        {/* Mobile Logo & Back Link */}
+        <div className="flex justify-between items-center lg:hidden absolute top-6 left-6 right-6">
+          <Link to="/" className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gradient-to-tr from-[#7c3aed] to-[#a78bfa] rounded-lg flex items-center justify-center">
+              <LuLeaf className="text-white text-base" />
+            </div>
+            <span className="font-bold text-sm text-white block tracking-wide">
+              KAZIR HAAT
+            </span>
+          </Link>
+          <Link to="/" className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1 font-semibold">
+            <FaArrowLeft size={10} /> Website
+          </Link>
+        </div>
+
+        <div className="max-w-md w-full mx-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <motion.h2 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="text-3xl font-bold mb-2"
+            >
+              Welcome back
+            </motion.h2>
+            <p className="text-gray-400 text-sm">Please enter your details to sign in</p>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
-            <div className="relative flex items-center">
+          {/* Error notification */}
+          {error && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="mb-6 p-4 rounded-xl text-xs font-semibold bg-red-950/50 text-red-400 border border-red-900/50"
+            >
+              {error}
+            </motion.div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleSignIn} className="flex flex-col gap-5">
+            <div>
+              <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Email Address</label>
               <input 
-                type={showPassword ? 'text' : 'password'} 
+                type="email" 
                 required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-gray-200 rounded-xl pl-4 pr-12 py-3 outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-all bg-gray-50/50 focus:bg-white" 
-                placeholder="••••••••" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-[#120e28] border border-[#231b4d] rounded-xl px-4 py-3.5 text-sm outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] transition-all text-white placeholder-gray-500" 
+                placeholder="you@example.com" 
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 text-gray-400 hover:text-gray-600 transition-colors focus:outline-none cursor-pointer"
-              >
-                {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
-              </button>
             </div>
-          </div>
 
-          <div className="flex items-center justify-between mt-2">
-            <div className="flex items-center">
-              <input 
-                id="remember-me" 
-                name="remember-me" 
-                type="checkbox" 
-                className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded cursor-pointer" 
-              />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-600 cursor-pointer">
-                Remember me
+            <div>
+              <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Password</label>
+              <div className="relative flex items-center">
+                <input 
+                  type={showPassword ? 'text' : 'password'} 
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-[#120e28] border border-[#231b4d] rounded-xl pl-4 pr-12 py-3.5 text-sm outline-none focus:border-[#7c3aed] focus:ring-1 focus:ring-[#7c3aed] transition-all text-white placeholder-[#2b2742]" 
+                  placeholder="••••••••" 
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 text-gray-400 hover:text-gray-300 transition-colors focus:outline-none cursor-pointer"
+                >
+                  {showPassword ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
+                </button>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between mt-1 text-sm">
+              <label className="flex items-center cursor-pointer select-none">
+                <input 
+                  id="remember-me" 
+                  name="remember-me" 
+                  type="checkbox" 
+                  className="h-4 w-4 bg-[#120e28] border-[#231b4d] rounded text-[#7c3aed] focus:ring-[#7c3aed] focus:ring-offset-[#0a0816] cursor-pointer" 
+                />
+                <span className="ml-2.5 text-gray-300 text-xs">
+                  Remember me
+                </span>
               </label>
-            </div>
 
-            <div className="text-sm">
-              <a href="#" className="font-medium text-green-600 hover:text-green-500 transition-colors">
+              <a href="#" className="text-xs font-medium text-purple-400 hover:text-purple-300 transition-colors">
                 Forgot password?
               </a>
             </div>
+
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-lg shadow-purple-600/10 text-sm font-semibold text-white bg-gradient-to-r from-[#7c3aed] to-[#9061f9] hover:from-[#6d28d9] hover:to-[#7c3aed] focus:outline-none transition-all transform hover:-translate-y-0.5 mt-3 cursor-pointer disabled:opacity-50"
+            >
+              {loading ? 'Signing In...' : 'Sign In'}
+            </button>
+          </form>
+
+          {/* Divider */}
+          <div className="mt-8 relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-[#1e173e]"></div>
+            </div>
+            <div className="relative flex justify-center text-xs">
+              <span className="px-3 bg-[#0a0816] text-gray-500 uppercase tracking-widest font-semibold">Or continue with</span>
+            </div>
           </div>
 
-          <button 
-            type="submit" 
-            disabled={loading}
-            className="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-lg shadow-green-600/20 text-sm font-semibold text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all transform hover:-translate-y-0.5 mt-4 cursor-pointer disabled:opacity-50"
-          >
-            {loading ? 'Signing In...' : 'Sign In'}
-          </button>
-        </form>
+          {/* Social Logins */}
+          <div className="mt-6 flex gap-3">
+            <button className="flex-1 flex items-center justify-center gap-2 px-4 py-3 border border-[#231b4d] rounded-xl shadow-sm bg-[#120e28] hover:bg-[#1a143a] text-xs font-semibold text-white transition-colors cursor-pointer">
+              <FaGoogle className="text-red-400" size={14} /> Google
+            </button>
+            <button className="flex-1 flex items-center justify-center gap-2 px-4 py-3 border border-[#231b4d] rounded-xl shadow-sm bg-[#120e28] hover:bg-[#1a143a] text-xs font-semibold text-white transition-colors cursor-pointer">
+              <FaApple size={14} /> Apple
+            </button>
+          </div>
 
-        <div className="mt-8 relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">Or continue with</span>
-          </div>
+          <p className="mt-10 text-center text-sm text-gray-400">
+            Don't have an account?{' '}
+            <Link to="/signup" className="font-semibold text-purple-400 hover:text-purple-300 transition-colors">
+              Sign up
+            </Link>
+          </p>
         </div>
-
-        <div className="mt-6 flex gap-3">
-          <button className="w-full flex items-center justify-center px-4 py-2.5 border border-gray-200 rounded-xl shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
-            <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)"><path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/><path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/><path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"/><path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"/></g></svg>
-            Google
-          </button>
-        </div>
-
-        <p className="mt-8 text-center text-sm text-gray-600">
-          Don't have an account?{' '}
-          <Link to="/signup" className="font-semibold text-green-600 hover:text-green-500 transition-colors">
-            Sign up
-          </Link>
-        </p>
       </div>
     </div>
   );
